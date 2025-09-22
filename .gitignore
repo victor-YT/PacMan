@@ -2,6 +2,12 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+
+# Rider / IntelliJ IDEA
+.idea/
+*.sln
+*.csproj
+
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -97,3 +103,6 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+.vscode/extensions.json
+.vscode/launch.json
+.vscode/settings.json
