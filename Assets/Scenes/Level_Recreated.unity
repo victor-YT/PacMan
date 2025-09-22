@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 84356440}
   - component: {fileID: 84356441}
   m_Layer: 0
-  m_Name: ghost1_0
+  m_Name: ghost1_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 85541134}
   - component: {fileID: 85541135}
   m_Layer: 0
-  m_Name: ghost3_0
+  m_Name: ghost3_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 107680529}
   - component: {fileID: 107680530}
   m_Layer: 0
-  m_Name: ghost1 (2)_0
+  m_Name: ghost1_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 128173880}
   - component: {fileID: 128173881}
   m_Layer: 0
-  m_Name: player (1)_0
+  m_Name: player_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -700,7 +700,7 @@ GameObject:
   - component: {fileID: 163269005}
   - component: {fileID: 163269006}
   m_Layer: 0
-  m_Name: player-E (3)_0
+  m_Name: player-E_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 195664604}
   - component: {fileID: 195664605}
   m_Layer: 0
-  m_Name: player-E (2)_0
+  m_Name: player-E_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1294,7 +1294,7 @@ GameObject:
   - component: {fileID: 320736018}
   - component: {fileID: 320736019}
   m_Layer: 0
-  m_Name: ghost3 (2)_0
+  m_Name: ghost3_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1380,7 +1380,7 @@ GameObject:
   - component: {fileID: 348013319}
   - component: {fileID: 348013320}
   m_Layer: 0
-  m_Name: player-E_0
+  m_Name: player-E_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1466,7 +1466,7 @@ GameObject:
   - component: {fileID: 448490557}
   - component: {fileID: 448490558}
   m_Layer: 0
-  m_Name: player_move_up_0
+  m_Name: player_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1638,7 +1638,7 @@ GameObject:
   - component: {fileID: 511171650}
   - component: {fileID: 511171651}
   m_Layer: 0
-  m_Name: player-die_0
+  m_Name: player-die
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1724,7 +1724,7 @@ GameObject:
   - component: {fileID: 557013703}
   - component: {fileID: 557013704}
   m_Layer: 0
-  m_Name: bonus_0
+  m_Name: bonus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2042,7 +2042,7 @@ GameObject:
   - component: {fileID: 784875341}
   - component: {fileID: 784875342}
   m_Layer: 0
-  m_Name: ghost4 (4)_0
+  m_Name: ghost_scared_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2128,7 +2128,7 @@ GameObject:
   - component: {fileID: 792092491}
   - component: {fileID: 792092492}
   m_Layer: 0
-  m_Name: ghost3 (3)_0
+  m_Name: ghost3_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2482,7 +2482,7 @@ GameObject:
   - component: {fileID: 993378151}
   - component: {fileID: 993378152}
   m_Layer: 0
-  m_Name: ghost2 (1)_0
+  m_Name: ghost2_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2568,7 +2568,7 @@ GameObject:
   - component: {fileID: 1002502538}
   - component: {fileID: 1002502539}
   m_Layer: 0
-  m_Name: ghost4 (6)_0
+  m_Name: ghost_scared_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2654,7 +2654,7 @@ GameObject:
   - component: {fileID: 1025042656}
   - component: {fileID: 1025042657}
   m_Layer: 0
-  m_Name: ghost3 (1)_0
+  m_Name: ghost3_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3021,7 +3021,7 @@ GameObject:
   - component: {fileID: 1074644130}
   - component: {fileID: 1074644131}
   m_Layer: 0
-  m_Name: ghost4 (2)_0
+  m_Name: ghost4_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3107,7 +3107,7 @@ GameObject:
   - component: {fileID: 1081665314}
   - component: {fileID: 1081665315}
   m_Layer: 0
-  m_Name: ghost4 (5)_0 (1)
+  m_Name: ghost_scared_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3322,7 +3322,7 @@ GameObject:
   - component: {fileID: 1100085660}
   - component: {fileID: 1100085661}
   m_Layer: 0
-  m_Name: ghost2 (3)_0
+  m_Name: ghost2_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3408,7 +3408,7 @@ GameObject:
   - component: {fileID: 1137567237}
   - component: {fileID: 1137567238}
   m_Layer: 0
-  m_Name: player-E (1)_0
+  m_Name: player-E_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3762,7 +3762,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -999
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -3782,7 +3782,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.892124, y: -13.24144, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3798,7 +3798,7 @@ GameObject:
   - component: {fileID: 1268011342}
   - component: {fileID: 1268011343}
   m_Layer: 0
-  m_Name: ghost1 (3)_0
+  m_Name: ghost1_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3884,7 +3884,7 @@ GameObject:
   - component: {fileID: 1271680234}
   - component: {fileID: 1271680235}
   m_Layer: 0
-  m_Name: ghostdeath (2)_0
+  m_Name: ghostdeath_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4091,7 +4091,7 @@ GameObject:
   - component: {fileID: 1355712956}
   - component: {fileID: 1355712957}
   m_Layer: 0
-  m_Name: ghost4 (5)_0
+  m_Name: ghost_scared_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4177,7 +4177,7 @@ GameObject:
   - component: {fileID: 1406875584}
   - component: {fileID: 1406875585}
   m_Layer: 0
-  m_Name: ghostdeath (3)_0
+  m_Name: ghostdeath_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4263,7 +4263,7 @@ GameObject:
   - component: {fileID: 1419613155}
   - component: {fileID: 1419613156}
   m_Layer: 0
-  m_Name: ghostdeath_0
+  m_Name: ghostdeath_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4349,7 +4349,7 @@ GameObject:
   - component: {fileID: 1485860243}
   - component: {fileID: 1485860244}
   m_Layer: 0
-  m_Name: ghost2 (2)_0
+  m_Name: ghost2_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4435,7 +4435,7 @@ GameObject:
   - component: {fileID: 1507367872}
   - component: {fileID: 1507367873}
   m_Layer: 0
-  m_Name: player (1)_0 (1)
+  m_Name: player_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4641,7 +4641,7 @@ GameObject:
   - component: {fileID: 1547710807}
   - component: {fileID: 1547710808}
   m_Layer: 0
-  m_Name: ghost2_0
+  m_Name: ghost2_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4727,7 +4727,7 @@ GameObject:
   - component: {fileID: 1565264343}
   - component: {fileID: 1565264344}
   m_Layer: 0
-  m_Name: ghost1 (1)_0
+  m_Name: ghost1_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4953,7 +4953,7 @@ GameObject:
   - component: {fileID: 1609335053}
   - component: {fileID: 1609335054}
   m_Layer: 0
-  m_Name: player_0
+  m_Name: player_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5207,7 +5207,7 @@ GameObject:
   - component: {fileID: 1762621038}
   - component: {fileID: 1762621039}
   m_Layer: 0
-  m_Name: ghost4 (1)_0
+  m_Name: ghost4_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13226,7 +13226,7 @@ Tilemap:
       - {fileID: 958705189926253425, guid: 2733e3278fff047f5b25905f59e720d9, type: 3}
       - {fileID: -2932079881441637607, guid: 2733e3278fff047f5b25905f59e720d9, type: 3}
       - {fileID: -9148310625032469293, guid: 2733e3278fff047f5b25905f59e720d9, type: 3}
-      m_AnimationSpeed: 12.000001
+      m_AnimationSpeed: 12
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 2, y: -3, z: 0}
@@ -13237,7 +13237,7 @@ Tilemap:
       - {fileID: 958705189926253425, guid: 2733e3278fff047f5b25905f59e720d9, type: 3}
       - {fileID: -2932079881441637607, guid: 2733e3278fff047f5b25905f59e720d9, type: 3}
       - {fileID: -9148310625032469293, guid: 2733e3278fff047f5b25905f59e720d9, type: 3}
-      m_AnimationSpeed: 12
+      m_AnimationSpeed: 12.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 27, y: -3, z: 0}
@@ -13472,7 +13472,7 @@ GameObject:
   - component: {fileID: 1937167602}
   - component: {fileID: 1937167603}
   m_Layer: 0
-  m_Name: ghost4_0
+  m_Name: ghost4_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13644,7 +13644,7 @@ GameObject:
   - component: {fileID: 2013065007}
   - component: {fileID: 2013065008}
   m_Layer: 0
-  m_Name: ghostdeath (1)_0
+  m_Name: ghostdeath_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13730,7 +13730,7 @@ GameObject:
   - component: {fileID: 2040165360}
   - component: {fileID: 2040165361}
   m_Layer: 0
-  m_Name: ghost4 (3)_0
+  m_Name: ghost4_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
