@@ -5,7 +5,7 @@ public class StartSceneUI : MonoBehaviour
 {
     public void LoadLevel1()
     {
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Level_Recreated");
     }
 
     public void LoadLevel2()
