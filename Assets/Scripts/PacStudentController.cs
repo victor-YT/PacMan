@@ -8,6 +8,8 @@ public class PacStudentController : MonoBehaviour
     [Header("Maps")]
     public Tilemap levelMap;
     public List<TileBase> notWalkableTiles;
+    public List<TileBase> pelletTiles;
+    public List<TileBase> powerPelletTiles;
 
     [Header("Movement")]
     public float moveSpeed = 6f;
@@ -29,16 +31,18 @@ public class PacStudentController : MonoBehaviour
     public string animDown = "player_move_down";
     public string animLeft = "player_move_left";
     public string animRight = "player_move_right";
+    public string animDeath = "player_death";
 
     [Header("Audio")]
-    public AudioSource audioSource;
+    public AudioSource moveAudio;      // looped move/eat source
+    public AudioSource sfxAudio;       // one-shot SFX source
     public AudioClip moveClip;
     public AudioClip eatClip;
-    public List<TileBase> pelletTiles;
-    public List<TileBase> powerPelletTiles;
+    public AudioClip wallHitClip;
 
     [Header("FX")]
     public ParticleSystem dust;
+    public ParticleSystem wallHitFX;
 
     Vector2Int lastInput = Vector2Int.right;
     Vector2Int currentInput = Vector2Int.right;
@@ -46,9 +50,24 @@ public class PacStudentController : MonoBehaviour
     Vector3 targetWorld;
     bool isMoving;
     bool canTeleport = true;
+    bool controlEnabled = true;
+    bool wallHitLatched;
+
+    GameManager gm;
+
+    void Awake()
+    {
+        if (moveAudio) { moveAudio.spatialBlend = 0f; moveAudio.loop = false; moveAudio.playOnAwake = false; }
+        if (sfxAudio)  { sfxAudio.spatialBlend  = 0f; sfxAudio.loop  = false; sfxAudio.playOnAwake  = false; }
+
+        if (wallHitClip && !wallHitClip.preloadAudioData) wallHitClip.LoadAudioData();
+        if (moveClip    && !moveClip.preloadAudioData)    moveClip.LoadAudioData();
+        if (eatClip     && !eatClip.preloadAudioData)     eatClip.LoadAudioData();
+    }
 
     void Start()
     {
+        if (!gm) gm = FindFirstObjectByType<GameManager>();
         Vector3Int startCell = levelMap.WorldToCell(transform.position);
         targetWorld = levelMap.GetCellCenterWorld(startCell);
         transform.position = targetWorld;
@@ -58,6 +77,13 @@ public class PacStudentController : MonoBehaviour
 
     void Update()
     {
+        if (!controlEnabled)
+        {
+            isMoving = false;
+            SetMoving(false);
+            return;
+        }
+
         ReadInput();
         HandleTeleport();
 
@@ -76,6 +102,8 @@ public class PacStudentController : MonoBehaviour
                 transform.position = targetWorld;
                 isMoving = false;
                 SetMoving(false);
+                ConsumeIfPickupAtCell(levelMap.WorldToCell(transform.position));
+                wallHitLatched = false;
             }
         }
     }
@@ -102,7 +130,29 @@ public class PacStudentController : MonoBehaviour
             PickMoveAudio(nextCell);
             return true;
         }
+        else
+        {
+            if (!wallHitLatched)
+            {
+                wallHitLatched = true;
+                FireWallHit(levelMap.GetCellCenterWorld(nextCell));
+            }
+        }
         return false;
+    }
+
+    void FireWallHit(Vector3 where)
+    {
+        if (sfxAudio && wallHitClip)
+        {
+            sfxAudio.Stop();
+            sfxAudio.PlayOneShot(wallHitClip);
+        }
+        if (wallHitFX)
+        {
+            wallHitFX.transform.position = where;
+            wallHitFX.Play();
+        }
     }
 
     bool IsWalkable(Vector3Int cell)
@@ -119,13 +169,13 @@ public class PacStudentController : MonoBehaviour
         if (!canTeleport) return;
         Vector3 pos = transform.position;
 
-        if (gateA != null && Vector2.Distance(pos, gateA.position) < gateDistance)
+        if (gateA && Vector2.Distance(pos, gateA.position) < gateDistance)
         {
             TeleportTo(gateB, currentInput);
             return;
         }
 
-        if (gateB != null && Vector2.Distance(pos, gateB.position) < gateDistance)
+        if (gateB && Vector2.Distance(pos, gateB.position) < gateDistance)
         {
             TeleportTo(gateA, currentInput);
             return;
@@ -134,6 +184,8 @@ public class PacStudentController : MonoBehaviour
 
     void TeleportTo(Transform dst, Vector2Int dir)
     {
+        if (!dst) return;
+
         canTeleport = false;
         StartCoroutine(TeleportCooldownRoutine());
 
@@ -169,31 +221,118 @@ public class PacStudentController : MonoBehaviour
 
     void PlayDirAnim(Vector2Int dir)
     {
-        if (!animator) return;
+        if (!animator || animator.runtimeAnimatorController == null) return;
+        string state = animRight;
         if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
-            animator.Play(dir.x > 0 ? animRight : animLeft);
+            state = dir.x > 0 ? animRight : animLeft;
         else
-            animator.Play(dir.y > 0 ? animUp : animDown);
+            state = dir.y > 0 ? animUp : animDown;
+        animator.Play(state, 0, 0f);
     }
 
     void SetMoving(bool moving)
     {
-        if (audioSource && !moving && audioSource.isPlaying) audioSource.Stop();
         if (dust)
         {
             var em = dust.emission;
             em.enabled = moving;
         }
+
+        if (!moveAudio) return;
+
+        if (!moving)
+        {
+            moveAudio.loop = false;
+            if (moveAudio.isPlaying) moveAudio.Stop();
+            return;
+        }
+
+        moveAudio.loop = true;
+        if (!moveAudio.isPlaying) moveAudio.Play();
     }
 
     void PickMoveAudio(Vector3Int nextCell)
     {
-        if (!audioSource) return;
+        if (!moveAudio) return;
         TileBase t = levelMap.GetTile(nextCell);
-        bool aboutToEat = (pelletTiles != null && pelletTiles.Contains(t)) || (powerPelletTiles != null && powerPelletTiles.Contains(t));
+        bool aboutToEat =
+            (pelletTiles != null && pelletTiles.Contains(t)) ||
+            (powerPelletTiles != null && powerPelletTiles.Contains(t));
         AudioClip clip = aboutToEat ? eatClip : moveClip;
         if (!clip) return;
-        if (audioSource.clip != clip) audioSource.clip = clip;
-        if (!audioSource.isPlaying) audioSource.Play();
+
+        if (moveAudio.clip != clip) moveAudio.clip = clip;
+        moveAudio.loop = true;
+        if (!moveAudio.isPlaying) moveAudio.Play();
+    }
+
+    void ConsumeIfPickupAtCell(Vector3Int cell)
+    {
+        TileBase t = levelMap.GetTile(cell);
+        if (t == null) return;
+
+        bool isPellet = pelletTiles != null && pelletTiles.Contains(t);
+        bool isPower = powerPelletTiles != null && powerPelletTiles.Contains(t);
+
+        if (!isPellet && !isPower) return;
+
+        levelMap.SetTile(cell, null);
+
+        if (gm)
+        {
+            if (isPower) gm.OnPowerPelletEaten();
+            else gm.OnPelletEaten();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!controlEnabled) return;
+
+        if (other.CompareTag("Cherry"))
+        {
+            if (gm) gm.OnCherryEaten();
+            Destroy(other.gameObject);
+            return;
+        }
+
+        var ghost = other.GetComponent<GhostController>();
+        if (ghost)
+        {
+            if (gm) gm.OnHitGhost(ghost);
+        }
+    }
+
+    public void EnableControl(bool enable)
+    {
+        controlEnabled = enable;
+        if (!enable)
+        {
+            isMoving = false;
+            SetMoving(false);
+        }
+    }
+
+    public void PlayDeath()
+    {
+        EnableControl(false);
+        if (animator && !string.IsNullOrEmpty(animDeath))
+            animator.Play(animDeath, 0, 0f);
+    }
+
+    public int RemainingPelletCount()
+    {
+        if (!levelMap) return 0;
+        int count = 0;
+        BoundsInt bounds = levelMap.cellBounds;
+        foreach (var pos in bounds.allPositionsWithin)
+        {
+            TileBase t = levelMap.GetTile(pos);
+            if (t == null) continue;
+            if ((pelletTiles != null && pelletTiles.Contains(t)) ||
+                (powerPelletTiles != null && powerPelletTiles.Contains(t)))
+                count++;
+        }
+        return count;
     }
 }
