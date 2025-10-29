@@ -122,8 +122,20 @@ public class GameManager : MonoBehaviour
 
     void FreezeActors(bool stop)
     {
+        // Player
         if (player) player.EnableControl(!stop);
-        if (ghosts != null) foreach (var g in ghosts) if (g) g.Freeze(stop);
+
+        // Ghosts
+        if (ghosts == null) return;
+        foreach (var g in ghosts)
+        {
+            if (!g) continue;
+
+            g.Freeze(stop);
+
+            var mv = g.GetComponent<GhostMovement>();
+            if (mv) mv.Freeze(stop);
+        }
     }
 
     public void OnPelletEaten()

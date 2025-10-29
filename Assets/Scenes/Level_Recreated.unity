@@ -8357,6 +8357,7 @@ GameObject:
   - component: {fileID: 756593567}
   - component: {fileID: 756593566}
   - component: {fileID: 756593568}
+  - component: {fileID: 756593569}
   m_Layer: 0
   m_Name: Ghost1
   m_TagString: Untagged
@@ -8532,10 +8533,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 756593563}
-  animNormal: normal
-  animScared: scared
-  animRecover: recover
-  animDead: dead
+  normalPrefix: Walk_
+  scaredPrefix: Scared_
+  recoverPrefix: Scared_
+  deadPrefix: Dead_
+  dirUp: Up
+  dirDown: Down
+  dirLeft: Left
+  dirRight: Right
+  useFlickerForRecover: 1
+  recoverFlickerInterval: 0.25
+--- !u!114 &756593569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756593562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5991671c765e406d9cd327aa2278af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ghostID: 1
+  anim: {fileID: 756593568}
+  map: {fileID: 1930810867}
+  pac: {fileID: 230567516}
+  notWalkableTiles:
+  - {fileID: 11400000, guid: 00da126c7067e469290580b4bce98a90, type: 2}
+  - {fileID: 11400000, guid: 6e9d62aa460dc4e4689662a01a97e1a3, type: 2}
+  - {fileID: 11400000, guid: 2b4722476c1df4e41b4b3c9ae6276bb5, type: 2}
+  - {fileID: 11400000, guid: 128c7aaf4238c406699acc81b54cccc0, type: 2}
+  - {fileID: 11400000, guid: 847ee7ebd387c4a218cb264fb5454d3d, type: 2}
+  gateA: {fileID: 178586824}
+  gateB: {fileID: 816482982}
+  gateBlockDistance: 0.45
+  homeCell: {x: 13, y: -14, z: 0}
+  doorTopCells:
+  - {x: 14, y: -12, z: 0}
+  - {x: 15, y: -12, z: 0}
+  doorBottomCells:
+  - {x: 14, y: -16, z: 0}
+  - {x: 15, y: -16, z: 0}
+  leaveOnStart: 1
+  forbidReentry: 1
+  normalScaleOfPac: 0.9
+  scaredScaleOfNormal: 0.5
+  deadScaleOfNormal: 0.5
 --- !u!1 &781758372
 GameObject:
   m_ObjectHideFlags: 0
@@ -9364,6 +9408,7 @@ GameObject:
   - component: {fileID: 1041706702}
   - component: {fileID: 1041706701}
   - component: {fileID: 1041706700}
+  - component: {fileID: 1041706703}
   m_Layer: 0
   m_Name: Ghost3
   m_TagString: Untagged
@@ -9476,10 +9521,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1041706698}
-  animNormal: normal
-  animScared: scared
-  animRecover: recover
-  animDead: dead
+  normalPrefix: Walk_
+  scaredPrefix: Scared_
+  recoverPrefix: Scared_
+  deadPrefix: Dead_
+  dirUp: Up
+  dirDown: Down
+  dirLeft: Left
+  dirRight: Right
+  useFlickerForRecover: 1
+  recoverFlickerInterval: 0.25
 --- !u!50 &1041706701
 Rigidbody2D:
   serializedVersion: 4
@@ -9543,6 +9594,43 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &1041706703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041706696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5991671c765e406d9cd327aa2278af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ghostID: 3
+  anim: {fileID: 1041706700}
+  map: {fileID: 1930810867}
+  pac: {fileID: 230567516}
+  notWalkableTiles:
+  - {fileID: 11400000, guid: 00da126c7067e469290580b4bce98a90, type: 2}
+  - {fileID: 11400000, guid: 6e9d62aa460dc4e4689662a01a97e1a3, type: 2}
+  - {fileID: 11400000, guid: 2b4722476c1df4e41b4b3c9ae6276bb5, type: 2}
+  - {fileID: 11400000, guid: 128c7aaf4238c406699acc81b54cccc0, type: 2}
+  - {fileID: 11400000, guid: 847ee7ebd387c4a218cb264fb5454d3d, type: 2}
+  gateA: {fileID: 178586824}
+  gateB: {fileID: 816482982}
+  gateBlockDistance: 0.45
+  homeCell: {x: 15, y: -14, z: 0}
+  doorTopCells:
+  - {x: 14, y: -12, z: 0}
+  - {x: 15, y: -12, z: 0}
+  doorBottomCells:
+  - {x: 14, y: -16, z: 0}
+  - {x: 15, y: -16, z: 0}
+  leaveOnStart: 1
+  forbidReentry: 1
+  normalScaleOfPac: 0.9
+  scaredScaleOfNormal: 0.5
+  deadScaleOfNormal: 0.5
 --- !u!1 &1071632573
 GameObject:
   m_ObjectHideFlags: 0
@@ -10144,6 +10232,84 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0.00000071525574, y: 0.0000019073486}
   m_Radius: 0.4375
+--- !u!1 &1090232749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1090232750}
+  - component: {fileID: 1090232751}
+  m_Layer: 0
+  m_Name: SpawnArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1090232750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090232749}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1699851932}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1090232751
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090232749}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 15, y: -13.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 6.8, y: 3.8}
+  m_EdgeRadius: 0
 --- !u!1 &1100085659
 GameObject:
   m_ObjectHideFlags: 0
@@ -10935,6 +11101,7 @@ GameObject:
   - component: {fileID: 1220690391}
   - component: {fileID: 1220690390}
   - component: {fileID: 1220690389}
+  - component: {fileID: 1220690392}
   m_Layer: 0
   m_Name: Ghost2
   m_TagString: Untagged
@@ -11047,10 +11214,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1220690387}
-  animNormal: normal
-  animScared: scared
-  animRecover: recover
-  animDead: dead
+  normalPrefix: Walk_
+  scaredPrefix: Scared_
+  recoverPrefix: Scared_
+  deadPrefix: Dead_
+  dirUp: Up
+  dirDown: Down
+  dirLeft: Left
+  dirRight: Right
+  useFlickerForRecover: 1
+  recoverFlickerInterval: 0.25
 --- !u!50 &1220690390
 Rigidbody2D:
   serializedVersion: 4
@@ -11114,6 +11287,43 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &1220690392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220690385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5991671c765e406d9cd327aa2278af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ghostID: 2
+  anim: {fileID: 1220690389}
+  map: {fileID: 1930810867}
+  pac: {fileID: 230567516}
+  notWalkableTiles:
+  - {fileID: 11400000, guid: 00da126c7067e469290580b4bce98a90, type: 2}
+  - {fileID: 11400000, guid: 6e9d62aa460dc4e4689662a01a97e1a3, type: 2}
+  - {fileID: 11400000, guid: 2b4722476c1df4e41b4b3c9ae6276bb5, type: 2}
+  - {fileID: 11400000, guid: 128c7aaf4238c406699acc81b54cccc0, type: 2}
+  - {fileID: 11400000, guid: 847ee7ebd387c4a218cb264fb5454d3d, type: 2}
+  gateA: {fileID: 178586824}
+  gateB: {fileID: 816482982}
+  gateBlockDistance: 0.45
+  homeCell: {x: 14, y: -14, z: 0}
+  doorTopCells:
+  - {x: 14, y: -12, z: 0}
+  - {x: 15, y: -12, z: 0}
+  doorBottomCells:
+  - {x: 14, y: -16, z: 0}
+  - {x: 15, y: -16, z: 0}
+  leaveOnStart: 1
+  forbidReentry: 1
+  normalScaleOfPac: 0.9
+  scaredScaleOfNormal: 0.5
+  deadScaleOfNormal: 0.5
 --- !u!1 &1231870959
 GameObject:
   m_ObjectHideFlags: 0
@@ -12684,6 +12894,7 @@ GameObject:
   - component: {fileID: 1593963683}
   - component: {fileID: 1593963682}
   - component: {fileID: 1593963681}
+  - component: {fileID: 1593963684}
   m_Layer: 0
   m_Name: Ghost4
   m_TagString: Untagged
@@ -12796,10 +13007,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1593963679}
-  animNormal: normal
-  animScared: scared
-  animRecover: recover
-  animDead: dead
+  normalPrefix: Walk_
+  scaredPrefix: Scared_
+  recoverPrefix: Scared_
+  deadPrefix: Dead_
+  dirUp: Up
+  dirDown: Down
+  dirLeft: Left
+  dirRight: Right
+  useFlickerForRecover: 1
+  recoverFlickerInterval: 0.25
 --- !u!50 &1593963682
 Rigidbody2D:
   serializedVersion: 4
@@ -12863,6 +13080,43 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &1593963684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593963677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5991671c765e406d9cd327aa2278af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ghostID: 4
+  anim: {fileID: 1593963681}
+  map: {fileID: 1930810867}
+  pac: {fileID: 230567516}
+  notWalkableTiles:
+  - {fileID: 11400000, guid: 00da126c7067e469290580b4bce98a90, type: 2}
+  - {fileID: 11400000, guid: 6e9d62aa460dc4e4689662a01a97e1a3, type: 2}
+  - {fileID: 11400000, guid: 2b4722476c1df4e41b4b3c9ae6276bb5, type: 2}
+  - {fileID: 11400000, guid: 128c7aaf4238c406699acc81b54cccc0, type: 2}
+  - {fileID: 11400000, guid: 847ee7ebd387c4a218cb264fb5454d3d, type: 2}
+  gateA: {fileID: 178586824}
+  gateB: {fileID: 816482982}
+  gateBlockDistance: 0.45
+  homeCell: {x: 16, y: -14, z: 0}
+  doorTopCells:
+  - {x: 14, y: -12, z: 0}
+  - {x: 15, y: -12, z: 0}
+  doorBottomCells:
+  - {x: 14, y: -16, z: 0}
+  - {x: 15, y: -16, z: 0}
+  leaveOnStart: 1
+  forbidReentry: 1
+  normalScaleOfPac: 0.9
+  scaredScaleOfNormal: 0.5
+  deadScaleOfNormal: 0.5
 --- !u!1 &1609335052
 GameObject:
   m_ObjectHideFlags: 0
@@ -13223,6 +13477,7 @@ Transform:
   - {fileID: 1036790099}
   - {fileID: 29287762}
   - {fileID: 1088747407}
+  - {fileID: 1090232750}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1714245375
