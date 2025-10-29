@@ -1,0 +1,15 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class StartSceneUI : MonoBehaviour
+{
+    public void LoadLevel1()
+    {
+        SceneManager.LoadScene("Level_Recreated");
+    }
+
+    public void LoadLevel2()
+    {
+        SceneManager.LoadScene("Level2");
+    }
+}
