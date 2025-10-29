@@ -34,12 +34,15 @@ public class PacStudentController : MonoBehaviour
     public string animDeath = "player_death";
 
     [Header("Audio")]
-    public AudioSource audioSource;
+    public AudioSource moveAudio;      // looped move/eat source
+    public AudioSource sfxAudio;       // one-shot SFX source
     public AudioClip moveClip;
     public AudioClip eatClip;
+    public AudioClip wallHitClip;
 
     [Header("FX")]
     public ParticleSystem dust;
+    public ParticleSystem wallHitFX;
 
     Vector2Int lastInput = Vector2Int.right;
     Vector2Int currentInput = Vector2Int.right;
@@ -48,16 +51,23 @@ public class PacStudentController : MonoBehaviour
     bool isMoving;
     bool canTeleport = true;
     bool controlEnabled = true;
+    bool wallHitLatched;
 
     GameManager gm;
 
     void Awake()
     {
-        gm = FindFirstObjectByType<GameManager>();
+        if (moveAudio) { moveAudio.spatialBlend = 0f; moveAudio.loop = false; moveAudio.playOnAwake = false; }
+        if (sfxAudio)  { sfxAudio.spatialBlend  = 0f; sfxAudio.loop  = false; sfxAudio.playOnAwake  = false; }
+
+        if (wallHitClip && !wallHitClip.preloadAudioData) wallHitClip.LoadAudioData();
+        if (moveClip    && !moveClip.preloadAudioData)    moveClip.LoadAudioData();
+        if (eatClip     && !eatClip.preloadAudioData)     eatClip.LoadAudioData();
     }
 
     void Start()
     {
+        if (!gm) gm = FindFirstObjectByType<GameManager>();
         Vector3Int startCell = levelMap.WorldToCell(transform.position);
         targetWorld = levelMap.GetCellCenterWorld(startCell);
         transform.position = targetWorld;
@@ -91,8 +101,9 @@ public class PacStudentController : MonoBehaviour
             {
                 transform.position = targetWorld;
                 isMoving = false;
-                ConsumeTileAt(levelMap.WorldToCell(transform.position));
                 SetMoving(false);
+                ConsumeIfPickupAtCell(levelMap.WorldToCell(transform.position));
+                wallHitLatched = false;
             }
         }
     }
@@ -119,7 +130,29 @@ public class PacStudentController : MonoBehaviour
             PickMoveAudio(nextCell);
             return true;
         }
+        else
+        {
+            if (!wallHitLatched)
+            {
+                wallHitLatched = true;
+                FireWallHit(levelMap.GetCellCenterWorld(nextCell));
+            }
+        }
         return false;
+    }
+
+    void FireWallHit(Vector3 where)
+    {
+        if (sfxAudio && wallHitClip)
+        {
+            sfxAudio.Stop();
+            sfxAudio.PlayOneShot(wallHitClip);
+        }
+        if (wallHitFX)
+        {
+            wallHitFX.transform.position = where;
+            wallHitFX.Play();
+        }
     }
 
     bool IsWalkable(Vector3Int cell)
@@ -190,60 +223,83 @@ public class PacStudentController : MonoBehaviour
     {
         if (!animator || animator.runtimeAnimatorController == null) return;
         string state = animRight;
-        if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y)) state = dir.x > 0 ? animRight : animLeft;
-        else state = dir.y > 0 ? animUp : animDown;
+        if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
+            state = dir.x > 0 ? animRight : animLeft;
+        else
+            state = dir.y > 0 ? animUp : animDown;
         animator.Play(state, 0, 0f);
     }
 
     void SetMoving(bool moving)
     {
-        if (audioSource && !moving && audioSource.isPlaying) audioSource.Stop();
         if (dust)
         {
             var em = dust.emission;
             em.enabled = moving;
         }
+
+        if (!moveAudio) return;
+
+        if (!moving)
+        {
+            moveAudio.loop = false;
+            if (moveAudio.isPlaying) moveAudio.Stop();
+            return;
+        }
+
+        moveAudio.loop = true;
+        if (!moveAudio.isPlaying) moveAudio.Play();
     }
 
     void PickMoveAudio(Vector3Int nextCell)
     {
-        if (!audioSource) return;
+        if (!moveAudio) return;
         TileBase t = levelMap.GetTile(nextCell);
         bool aboutToEat =
             (pelletTiles != null && pelletTiles.Contains(t)) ||
             (powerPelletTiles != null && powerPelletTiles.Contains(t));
         AudioClip clip = aboutToEat ? eatClip : moveClip;
         if (!clip) return;
-        if (audioSource.clip != clip) audioSource.clip = clip;
-        if (!audioSource.isPlaying) audioSource.Play();
+
+        if (moveAudio.clip != clip) moveAudio.clip = clip;
+        moveAudio.loop = true;
+        if (!moveAudio.isPlaying) moveAudio.Play();
     }
 
-    void ConsumeTileAt(Vector3Int cell)
+    void ConsumeIfPickupAtCell(Vector3Int cell)
     {
         TileBase t = levelMap.GetTile(cell);
         if (t == null) return;
 
-        if (pelletTiles != null && pelletTiles.Contains(t))
-        {
-            levelMap.SetTile(cell, null);
-            if (gm) gm.OnPelletEaten();
-            return;
-        }
+        bool isPellet = pelletTiles != null && pelletTiles.Contains(t);
+        bool isPower = powerPelletTiles != null && powerPelletTiles.Contains(t);
 
-        if (powerPelletTiles != null && powerPelletTiles.Contains(t))
+        if (!isPellet && !isPower) return;
+
+        levelMap.SetTile(cell, null);
+
+        if (gm)
         {
-            levelMap.SetTile(cell, null);
-            if (gm) gm.OnPowerPelletEaten();
-            return;
+            if (isPower) gm.OnPowerPelletEaten();
+            else gm.OnPelletEaten();
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (!controlEnabled) return;
+
         if (other.CompareTag("Cherry"))
         {
             if (gm) gm.OnCherryEaten();
             Destroy(other.gameObject);
+            return;
+        }
+
+        var ghost = other.GetComponent<GhostController>();
+        if (ghost)
+        {
+            if (gm) gm.OnHitGhost(ghost);
         }
     }
 
@@ -260,7 +316,8 @@ public class PacStudentController : MonoBehaviour
     public void PlayDeath()
     {
         EnableControl(false);
-        if (animator && !string.IsNullOrEmpty(animDeath)) animator.Play(animDeath, 0, 0f);
+        if (animator && !string.IsNullOrEmpty(animDeath))
+            animator.Play(animDeath, 0, 0f);
     }
 
     public int RemainingPelletCount()

@@ -222,14 +222,16 @@ public class GameManager : MonoBehaviour
 
     void SaveBestIfBetter()
     {
-        int bestScore = PlayerPrefs.GetInt("BEST_SCORE", 0);
-        float bestTime = PlayerPrefs.GetFloat("BEST_TIME", 0f);
+        int bestScore = PlayerPrefs.GetInt(PrefKeys.BestScore, 0);
+        float bestTime = PlayerPrefs.GetFloat(PrefKeys.BestTime, 0f);
+
         bool better = Score > bestScore || (Score == bestScore && (bestTime <= 0f || PlayTimer < bestTime));
         if (better)
         {
-            PlayerPrefs.SetInt("BEST_SCORE", Score);
-            PlayerPrefs.SetFloat("BEST_TIME", PlayTimer);
+            PlayerPrefs.SetInt(PrefKeys.BestScore, Score);
+            PlayerPrefs.SetFloat(PrefKeys.BestTime, PlayTimer);
             PlayerPrefs.Save();
+            Debug.Log($"Saved Best: score={Score}, time={PlayTimer:0.00}");
         }
     }
 
