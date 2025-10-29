@@ -8,6 +8,8 @@ public class PacStudentController : MonoBehaviour
     [Header("Maps")]
     public Tilemap levelMap;
     public List<TileBase> notWalkableTiles;
+    public List<TileBase> pelletTiles;
+    public List<TileBase> powerPelletTiles;
 
     [Header("Movement")]
     public float moveSpeed = 6f;
@@ -29,13 +31,12 @@ public class PacStudentController : MonoBehaviour
     public string animDown = "player_move_down";
     public string animLeft = "player_move_left";
     public string animRight = "player_move_right";
+    public string animDeath = "player_death";
 
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip moveClip;
     public AudioClip eatClip;
-    public List<TileBase> pelletTiles;
-    public List<TileBase> powerPelletTiles;
 
     [Header("FX")]
     public ParticleSystem dust;
@@ -46,6 +47,14 @@ public class PacStudentController : MonoBehaviour
     Vector3 targetWorld;
     bool isMoving;
     bool canTeleport = true;
+    bool controlEnabled = true;
+
+    GameManager gm;
+
+    void Awake()
+    {
+        gm = FindFirstObjectByType<GameManager>();
+    }
 
     void Start()
     {
@@ -58,6 +67,13 @@ public class PacStudentController : MonoBehaviour
 
     void Update()
     {
+        if (!controlEnabled)
+        {
+            isMoving = false;
+            SetMoving(false);
+            return;
+        }
+
         ReadInput();
         HandleTeleport();
 
@@ -75,6 +91,7 @@ public class PacStudentController : MonoBehaviour
             {
                 transform.position = targetWorld;
                 isMoving = false;
+                ConsumeTileAt(levelMap.WorldToCell(transform.position));
                 SetMoving(false);
             }
         }
@@ -119,13 +136,13 @@ public class PacStudentController : MonoBehaviour
         if (!canTeleport) return;
         Vector3 pos = transform.position;
 
-        if (gateA != null && Vector2.Distance(pos, gateA.position) < gateDistance)
+        if (gateA && Vector2.Distance(pos, gateA.position) < gateDistance)
         {
             TeleportTo(gateB, currentInput);
             return;
         }
 
-        if (gateB != null && Vector2.Distance(pos, gateB.position) < gateDistance)
+        if (gateB && Vector2.Distance(pos, gateB.position) < gateDistance)
         {
             TeleportTo(gateA, currentInput);
             return;
@@ -134,6 +151,8 @@ public class PacStudentController : MonoBehaviour
 
     void TeleportTo(Transform dst, Vector2Int dir)
     {
+        if (!dst) return;
+
         canTeleport = false;
         StartCoroutine(TeleportCooldownRoutine());
 
@@ -169,11 +188,11 @@ public class PacStudentController : MonoBehaviour
 
     void PlayDirAnim(Vector2Int dir)
     {
-        if (!animator) return;
-        if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
-            animator.Play(dir.x > 0 ? animRight : animLeft);
-        else
-            animator.Play(dir.y > 0 ? animUp : animDown);
+        if (!animator || animator.runtimeAnimatorController == null) return;
+        string state = animRight;
+        if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y)) state = dir.x > 0 ? animRight : animLeft;
+        else state = dir.y > 0 ? animUp : animDown;
+        animator.Play(state, 0, 0f);
     }
 
     void SetMoving(bool moving)
@@ -190,10 +209,73 @@ public class PacStudentController : MonoBehaviour
     {
         if (!audioSource) return;
         TileBase t = levelMap.GetTile(nextCell);
-        bool aboutToEat = (pelletTiles != null && pelletTiles.Contains(t)) || (powerPelletTiles != null && powerPelletTiles.Contains(t));
+        bool aboutToEat =
+            (pelletTiles != null && pelletTiles.Contains(t)) ||
+            (powerPelletTiles != null && powerPelletTiles.Contains(t));
         AudioClip clip = aboutToEat ? eatClip : moveClip;
         if (!clip) return;
         if (audioSource.clip != clip) audioSource.clip = clip;
         if (!audioSource.isPlaying) audioSource.Play();
+    }
+
+    void ConsumeTileAt(Vector3Int cell)
+    {
+        TileBase t = levelMap.GetTile(cell);
+        if (t == null) return;
+
+        if (pelletTiles != null && pelletTiles.Contains(t))
+        {
+            levelMap.SetTile(cell, null);
+            if (gm) gm.OnPelletEaten();
+            return;
+        }
+
+        if (powerPelletTiles != null && powerPelletTiles.Contains(t))
+        {
+            levelMap.SetTile(cell, null);
+            if (gm) gm.OnPowerPelletEaten();
+            return;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Cherry"))
+        {
+            if (gm) gm.OnCherryEaten();
+            Destroy(other.gameObject);
+        }
+    }
+
+    public void EnableControl(bool enable)
+    {
+        controlEnabled = enable;
+        if (!enable)
+        {
+            isMoving = false;
+            SetMoving(false);
+        }
+    }
+
+    public void PlayDeath()
+    {
+        EnableControl(false);
+        if (animator && !string.IsNullOrEmpty(animDeath)) animator.Play(animDeath, 0, 0f);
+    }
+
+    public int RemainingPelletCount()
+    {
+        if (!levelMap) return 0;
+        int count = 0;
+        BoundsInt bounds = levelMap.cellBounds;
+        foreach (var pos in bounds.allPositionsWithin)
+        {
+            TileBase t = levelMap.GetTile(pos);
+            if (t == null) continue;
+            if ((pelletTiles != null && pelletTiles.Contains(t)) ||
+                (powerPelletTiles != null && powerPelletTiles.Contains(t)))
+                count++;
+        }
+        return count;
     }
 }
